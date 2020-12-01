@@ -6,6 +6,57 @@ namespace Heist
     {
         static void Main(string[] args)
         {
+            Muscle Jim=new Muscle("Jim", 30, 15);
+            Hacker steve=new Hacker("Steve", 50, 25);
+            LockSpecialist john=new LockSpecialist("John", 60, 35);
+            Muscle sue=new Muscle("Sue", 25, 15);
+            Hacker yol=new Hacker("Yol", 30, 15);
+            LockSpecialist grey=new LockSpecialist("Grey", 45, 20);
+            List<IRobber> rolodex=new List<IRobber>(){Jim, steve, john, sue, yol, grey};
+            System.Console.WriteLine($"There are currently {rolodex.Count} avalible operatives");
+            System.Console.WriteLine("Please enter the name of a new operative. Leave blank to continue.");
+            string newName=Console.ReadLine();
+            while(newName!=""){
+                System.Console.WriteLine("Please enter the Specialty of the new opretive");
+                System.Console.WriteLine("Hacker (Disables alarm)");
+                System.Console.WriteLine("Muscle (Disams guards)");
+                System.Console.WriteLine("Lock Specialist (cracks vaults)");
+                string Specialty=Console.ReadLine();
+                System.Console.WriteLine("How skilled is this new operative. (between 1 and 100)");
+                int skill=-1;
+                while(skill<1||skill>100){
+                try{
+                    skill=int.Parse(Console.ReadLine());
+                }
+                catch(System.FormatException){
+                    System.Console.WriteLine("The skill level was entered incorrectly. Please try again.");
+                    
+                }
+                }
+                int cut=-1;
+                System.Console.WriteLine("Enter the percentage cut.");
+                while(cut<1){
+                    try{
+                        cut=int.Parse(Console.ReadLine());
+                    }
+                    catch(System.FormatException){
+                        System.Console.WriteLine("The percentage was entered incorrectly please try again.");
+                    }
+                }
+                if (Specialty.ToLower()=="hacker"){
+                    Hacker newOperative= new Hacker(newName, skill, cut);
+                    rolodex.Add(newOperative);
+                }else if (Specialty.ToLower()=="muscle"){
+                    Muscle newOperative=new Muscle(newName, skill, cut);
+                    rolodex.Add(newOperative);
+                }else if(Specialty.ToLower()=="lock specialist"){
+                    LockSpecialist newOperative=new LockSpecialist(newName, skill, cut);
+                    rolodex.Add(newOperative);
+                }
+                System.Console.WriteLine("Please enter the name of a new operative. Leave blank to continue.");
+                newName=Console.ReadLine();
+            }
+            /*
             int bankDifficulty=0;
             while(bankDifficulty==0){
                 System.Console.WriteLine("Enter the difficulty of the bank.");
@@ -81,6 +132,7 @@ namespace Heist
             }
             System.Console.WriteLine($"Number of successes: {success}");
             System.Console.WriteLine($"Number of failures: {Failure}");
+            */
         }
     }
 }
