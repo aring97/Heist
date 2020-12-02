@@ -17,5 +17,8 @@ namespace Heist{
                 System.Console.WriteLine($"{Name} has knocked out the guards!");
             }
         }
+        public string characterRoll(){
+            return "Muscle";
+        }
     }
 }

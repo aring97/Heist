@@ -17,5 +17,8 @@ namespace Heist{
                 System.Console.WriteLine($"{Name} has unlocked the vault!");
             }
         }
+        public string characterRoll(){
+            return "Lock Specialist";
+        }
     }
 }

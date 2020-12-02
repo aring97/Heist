@@ -17,5 +17,8 @@ namespace Heist{
                 System.Console.WriteLine($"{Name} has disabled the alarm system!");
             }
         }
+        public string characterRoll(){
+            return "Hacker";
+        }
     }
 }

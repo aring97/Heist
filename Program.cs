@@ -6,12 +6,12 @@ namespace Heist
     {
         static void Main(string[] args)
         {
-            Muscle Jim=new Muscle("Jim", 30, 15);
-            Hacker steve=new Hacker("Steve", 50, 25);
-            LockSpecialist john=new LockSpecialist("John", 60, 35);
-            Muscle sue=new Muscle("Sue", 25, 15);
-            Hacker yol=new Hacker("Yol", 30, 15);
-            LockSpecialist grey=new LockSpecialist("Grey", 45, 20);
+            Muscle Jim=new Muscle("Jim", 100, 25);
+            Hacker steve=new Hacker("Steve", 100, 25);
+            LockSpecialist john=new LockSpecialist("John", 100, 25);
+            Muscle sue=new Muscle("Sue", 50, 25);
+            Hacker yol=new Hacker("Yol", 50, 25);
+            LockSpecialist grey=new LockSpecialist("Grey", 50, 25);
             List<IRobber> rolodex=new List<IRobber>(){Jim, steve, john, sue, yol, grey};
             System.Console.WriteLine($"There are currently {rolodex.Count} avalible operatives");
             System.Console.WriteLine("Please enter the name of a new operative. Leave blank to continue.");
@@ -56,6 +56,72 @@ namespace Heist
                 System.Console.WriteLine("Please enter the name of a new operative. Leave blank to continue.");
                 newName=Console.ReadLine();
             }
+            Random random=new Random();
+            Bank bank =new Bank(random.Next(50000,1000001),random.Next(101),random.Next(101),random.Next(101));
+            List<string> recon=bank.compair();
+            System.Console.WriteLine($"The most secure system is {recon[0]}");
+            System.Console.WriteLine($"The least secure system is {recon[1]}");
+            List<IRobber> crew=new List<IRobber>();
+            int totalPercentLeft=100;
+            string newCrewMember="placeholder";
+            while(newCrewMember!=""){
+                int index=1;
+            foreach(IRobber member in rolodex)
+            {
+                if(member.PercentageCut>totalPercentLeft){
+                    index++;
+                    }
+                else{              
+                System.Console.WriteLine($"{index}: {member.Name}");
+                System.Console.WriteLine($" {member.characterRoll()}: {member.SkillLevel}");
+                System.Console.WriteLine($" Cut: {member.PercentageCut}");
+                index++;
+                }
+            }
+            System.Console.WriteLine("Pleas enter the number of who you would like to add to the crew.");
+            System.Console.WriteLine("Unable to add new member if above list is blank. Hit enter to continue.");
+            newCrewMember=Console.ReadLine();
+            if(newCrewMember!=""){
+            int crewNumber=-1;
+            while(crewNumber<0){
+                try{
+
+                    crewNumber=int.Parse(newCrewMember);
+                }
+                catch(System.FormatException){
+                    System.Console.WriteLine("unable to read that. Please try again.");
+                }
+            }
+            try{
+                totalPercentLeft-=rolodex[crewNumber-1].PercentageCut;
+            crew.Add(rolodex[crewNumber-1]);
+            rolodex.RemoveAt(crewNumber-1);
+            }
+            catch(System.ArgumentOutOfRangeException){
+                System.Console.WriteLine("The number entered was out of range");
+            }
+            System.Console.WriteLine("-------------------------------");
+            }
+            }
+            foreach(IRobber robber in crew){
+                robber.PerformSkill(bank);
+            }
+            if(bank.IsSecure){
+                System.Console.WriteLine("The bank is still secure. Heist failed");
+            }else{
+                System.Console.WriteLine("WE DID IT!!! Heist successful");
+                double totalPayout=0;
+                System.Console.WriteLine(bank.CashOnHand);
+                foreach(IRobber member in crew){
+                    double memberPay=bank.CashOnHand*(member.PercentageCut/100.00);
+                    System.Console.WriteLine($"{member.PercentageCut}");
+                    System.Console.WriteLine($"{member.Name} is payed ${memberPay}");
+                    totalPayout+=memberPay;
+                }
+                double myPay=bank.CashOnHand-totalPayout;
+                System.Console.WriteLine($"I earned a total of ${myPay}");
+                }
+
             /*
             int bankDifficulty=0;
             while(bankDifficulty==0){
@@ -133,6 +199,7 @@ namespace Heist
             System.Console.WriteLine($"Number of successes: {success}");
             System.Console.WriteLine($"Number of failures: {Failure}");
             */
+
         }
     }
 }
